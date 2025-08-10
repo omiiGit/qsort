@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h> 
 #include <SDL2/SDL_ttf.h>
+#include "grid.h"
 #include "Constant.h"
 #include "stdbool.h"
 
@@ -10,8 +11,10 @@ typedef struct
 {
     int width;
     int height;
+    int arr[8];
 
     const char* title;
+    Text font;
     SDL_Window* window;
     SDL_Surface* current_surface;
     SDL_Surface* buffer_surface;
@@ -24,4 +27,6 @@ void closeState(State* state);
 
 void updateStateSurface(State* state);
 
+static void qos(int arr[],int l,int r,State* state);
+void quicksort(int arr[],int len,State* state);
 #endif 

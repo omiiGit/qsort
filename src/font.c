@@ -17,10 +17,12 @@ void initText(Text* text,SDL_Surface* surface,char* string,int x,int y)
 
     if(text->font == NULL)
     {
-        printf("failed to load FONT-%s",TTF_GetError());
+        printf("failed to load FONT-%s\n",TTF_GetError());
     }
 
     SDL_Rect vec = {x,y};
 
     SDL_BlitSurface(text->fontSurface,NULL,surface,&vec);
+
+    SDL_FreeSurface(text->fontSurface);
 }

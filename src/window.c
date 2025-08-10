@@ -1,5 +1,4 @@
 #include "window.h"
-#include "grid.h"
 
 State createState(const char* title,int width,int height)
 {
@@ -43,10 +42,10 @@ void initState(State* state)
 
     state->buffer_surface = SDL_CreateRGBSurface(0,WIDTH,HEIGHT,32,0,0,0,0);
 
-    SDL_FillRect(state->buffer_surface,NULL,WHITE);
-    drawRuler(state->buffer_surface,RED,GAP);
+    state->font = createText("res/dina.ttf", 15, 0, 0, 255);
 
-    updateStateSurface(state); 
+    //SDL_FillRect(state->buffer_surface,NULL,WHITE);
+    //drawRuler(state->buffer_surface,RED,GAP);
 
 }
 
@@ -54,7 +53,10 @@ void updateState(State* state)
 {
     bool quit = false;
     SDL_Event event;
+    int arr[ARR_SIZE];
+    //Text num = createText("res/dina.ttf", 15, 0, 0, 255);
 
+    
     while(!quit)
     {
         while(SDL_PollEvent(&event))
@@ -64,6 +66,25 @@ void updateState(State* state)
                 case SDL_QUIT: quit = true; break;
             }
         }
+    
+        for(int i = 0;i < ARR_SIZE;i++)
+        {   
+            arr[i] = getRandom(18,1);
+        }
+
+        SDL_FillRect(state->buffer_surface,NULL,WHITE);
+
+        drawRuler(&state->font,state->buffer_surface,RED,GAP);
+
+        drawBars(state->buffer_surface,arr,ARR_SIZE,0);
+
+
+        updateStateSurface(state); 
+
+        SDL_Delay(100);
+
+        quicksort(arr,ARR_SIZE,state);
+
     }
 }
 
@@ -77,4 +98,40 @@ void closeState(State* state)
     SDL_Quit();
 }
 
+static void qos(int arr[],int l,int r,State* state)
+{
+    if(r > l)
+    {
+        int pivot = arr[r];
+        int i = l - 1;
+        int j = r;
+        int temp;
 
+        while(1)
+        {
+            while(arr[++i] < pivot);
+            while(arr[--j] > pivot);
+
+            if(i >= j) break;
+
+            temp = arr[i]; arr[i] = arr[j]; arr[j] = temp;
+        }
+        
+        temp = arr[i]; arr[i] = arr[r]; arr[r] = temp;
+
+        SDL_FillRect(state->buffer_surface,NULL,WHITE);
+        drawRuler(&state->font,state->buffer_surface,RED,GAP);
+        drawBars(state->buffer_surface,arr,ARR_SIZE,i);
+
+        updateStateSurface(state);
+        SDL_Delay(100);
+
+        qos(arr,i+1,r,state);
+        qos(arr,l,i-1,state);
+    }
+}
+
+void quicksort(int arr[],int len,State* state)
+{
+    qos(arr,0,len-1,state);
+}

@@ -15,9 +15,16 @@
 #define WIDTH 600
 #define HEIGHT 400
 
-#define ARR_SIZE 10
+//PANE
+#define PANE_WIDTH WIDTH-26
+#define PANE_HEIGHT HEIGHT-20
+
+#define ARR_SIZE 15
 
 //LINE
 #define GAP 20
+
+//BAR
+#define BAR_WIDTH GAP
 
 #endif 

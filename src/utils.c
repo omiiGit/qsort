@@ -28,3 +28,8 @@ void i_toa(int num,char* s)
     s[i] = '\0';
 
 }
+
+int getRandom(int upper,int lower)
+{
+    return rand() % (upper - lower + 1) + lower;
+}

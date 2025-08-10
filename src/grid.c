@@ -1,9 +1,6 @@
 #include "grid.h"
-#include "font.h"
-#include "utils.h"
-#include <ctype.h>
 
-void drawRuler(SDL_Surface *surface, Uint32 color, int gap) {
+void drawRuler(Text* num,SDL_Surface *surface, Uint32 color, int gap) {
 
   SDL_Rect lineY = {26, 0, 2, HEIGHT};
   SDL_FillRect(surface, &lineY, color);
@@ -13,7 +10,7 @@ void drawRuler(SDL_Surface *surface, Uint32 color, int gap) {
 
 
   int l = (HEIGHT - 20) / gap;
-  Text num = createText("res/dina.ttf", 15, 0, 0, 255);
+  //Text num = createText("res/dina.ttf", 15, 0, 0, 255);
   int x = 18;
   int y = gap;
 
@@ -25,7 +22,7 @@ void drawRuler(SDL_Surface *surface, Uint32 color, int gap) {
     char number[3];
     i_toa((l-1)-i, number);
 
-    initText(&num,surface,number,1,y-3);
+    initText(num,surface,number,1,y-3);
 
     y += gap;
   }
@@ -61,6 +58,23 @@ void drawRuler(SDL_Surface *surface, Uint32 color, int gap) {
         ly += GAP;
     }
 
+}
 
+void drawBar(SDL_Surface* surface,Uint32 color,int height,int column)
+{
+    SDL_Rect bar = {column*GAP+26,(18 - height)*GAP+20,BAR_WIDTH+2,height*GAP};
 
+    SDL_FillRect(surface,&bar,color);
+}
+
+void drawBars(SDL_Surface* surface,int arr[],int size,int j)
+{
+    for(int i = 0,col = 1;i < size;i++,col += 2)
+    {
+        //drawBar(surface,SDL_MapRGB(surface->format,getRandom(0,255),getRandom(0,255),getRandom(0,255)),arr[i],col);
+        if(i == j)
+            drawBar(surface,SDL_MapRGB(surface->format,0,255,0),arr[i],col);
+        else
+          drawBar(surface,SDL_MapRGB(surface->format,255,0,0),arr[i],col);
+    }
 }

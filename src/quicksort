@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "quicksort.h"  
 
-void qs(int arr[],int l,int r)
+static void qos(int arr[],int l,int r,State* state)
 {
     if(r > l)
     {
@@ -23,8 +23,19 @@ void qs(int arr[],int l,int r)
         
         temp = arr[i]; arr[i] = arr[r]; arr[r] = temp;
 
-        qs(arr,i+1,r);
-        qs(arr,l,i-1);
+        SDL_FillRect(state->buffer_surface,NULL,WHITE);
+        drawRuler(state->buffer_surface,RED,GAP);
+        drawBars(state->buffer_surface,SANDY,arr,10);
+
+        updateStateSurface(state);
+
+        qos(arr,i+1,r,state);
+        qos(arr,l,i-1,state);
     }
+}
+
+void quicksort(int arr[],int len,State* state)
+{
+    qos(arr,0,len-1,state);
 }
 
